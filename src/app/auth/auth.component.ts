@@ -27,7 +27,7 @@ export class AuthComponent implements OnDestroy {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private componentFactoryResolver: ComponentFactoryResolver
+    private componentFactoryResolver: ComponentFactoryResolver,
   ) {}
 
   onSwitchMode() {
@@ -46,6 +46,7 @@ export class AuthComponent implements OnDestroy {
     this.isLoading = true;
 
     if (this.isLoginMode) {
+
       authObs = this.authService.login(email, password);
     } else {
       authObs = this.authService.signup(email, password);
