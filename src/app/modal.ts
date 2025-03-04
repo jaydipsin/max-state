@@ -7,9 +7,9 @@ export interface IAppState {
 }
 
 export interface IUser {
-  idToken: string;
+  localId: string;
   email: string;
-  refreshToken: string;
+  Token: string;
   expiresIn: Date;
 }
 

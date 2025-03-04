@@ -12,6 +12,8 @@ import { shoppingListReducer } from './shopping-list/shopping-store/shopping-lis
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { AppReducer } from './store/app.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffect } from './auth/store/auth.effects';
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
   imports: [
@@ -19,6 +21,7 @@ import { AppReducer } from './store/app.reducer';
     HttpClientModule,
     AppRoutingModule,
     StoreModule.forRoot(AppReducer),
+    EffectsModule.forRoot(AuthEffect),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains the last 25 states in memory
       logOnly: environment.production, // Restrict extension to log-only mode in production
