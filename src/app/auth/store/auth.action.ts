@@ -11,7 +11,7 @@ const SINGUP_FAIL = '[AUTH] sing-up fail';
 
 export const LogInStart = createAction(
   LOGIN_START,
-  props<{ email: string; passwords: string }>()
+  props<{ email: string; password: string }>()
 );
 export const LogInSuccess = createAction(
   LOGIN_SUCCESS,
