@@ -20,7 +20,7 @@ export const LogInSuccess = createAction(
   LOGIN_SUCCESS,
   props<{ user: IUser }>()
 );
-export const LogInFail = createAction(LOGIN_FAIL);
+export const LogInFail = createAction(LOGIN_FAIL,props<{error:string}>());
 
 export const LogOutSuccess = createAction(
   LOGOUT_SUCCESS,

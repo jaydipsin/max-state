@@ -32,5 +32,7 @@ export interface IAuthResponseData {
 
 export interface AuthState {
   user: User | null;
+  authError:string | null,
+  isLoading:boolean
 }
 

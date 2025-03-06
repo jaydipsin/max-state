@@ -21,7 +21,7 @@ import { AuthEffect } from './auth/store/auth.effects';
     HttpClientModule,
     AppRoutingModule,
     StoreModule.forRoot(AppReducer),
-    EffectsModule.forRoot(AuthEffect),
+    EffectsModule.forRoot([AuthEffect]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains the last 25 states in memory
       logOnly: environment.production, // Restrict extension to log-only mode in production
