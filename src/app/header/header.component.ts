@@ -5,6 +5,7 @@ import { DataStorageService } from '../shared/data-storage.service';
 import { AuthService } from '../auth/auth.service';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../modal';
+import { LogOutSuccess } from '../auth/store/auth.action';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +18,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private dataStorageService: DataStorageService,
     private authService: AuthService,
-    private store:Store<IAppState>
+    private store:Store<IAppState>,
   ) {}
 
   ngOnInit() {
@@ -37,7 +38,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogout() {
-    this.authService.logout();
+    this.store.dispatch(LogOutSuccess())
   }
 
   ngOnDestroy() {

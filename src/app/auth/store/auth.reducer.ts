@@ -1,25 +1,39 @@
 import { createReducer, on } from '@ngrx/store';
 import { AuthState, IUser } from 'src/app/modal';
 import { User } from '../user.model';
-import { LogInFail, LogInStart, LogInSuccess } from './auth.action';
+import {
+  SignUpStart,
+  LogInStart,
+  AuthenticateSuccess,
+  AuthenticateFail,
+  ClearError,
+  LogOutSuccess,
+} from './auth.action';
 import { state } from '@angular/animations';
 
 export const InitialState: AuthState = {
   user: null,
   authError: null,
-  isLoading :false
+  isLoading: false,
 };
 
 export const AuthReducer = createReducer(
   InitialState,
+  on(SignUpStart, (state, action) => {
+    return {
+      ...state,
+      authError: null,
+      isLoading: true,
+    };
+  }),
   on(LogInStart, (state, action) => {
     return {
       ...state,
       authError: null,
-      isLoading:true
+      isLoading: true,
     };
   }),
-  on(LogInSuccess, (state, action) => {
+  on(AuthenticateSuccess, (state, action) => {
     const user = new User(
       action.user.email,
       action.user.localId,
@@ -28,16 +42,29 @@ export const AuthReducer = createReducer(
     );
     return {
       ...state,
-      user,
       authError: null,
-      isLoading:false,
+      isLoading: false,
+      user,
     };
   }),
-  on(LogInFail, (state, action) => {
+  on(AuthenticateFail, (state, action) => {
     return {
       ...state,
       authError: action.error,
-      isLoading:false
+      isLoading: false,
+    };
+  }),
+  on(ClearError, (state, action) => {
+    return {
+      ...state,
+      authError: null,
+      isLoading: false,
+    };
+  }),
+  on(LogOutSuccess, (state, action) => {
+    return {
+      ...state,
+      user: null,
     };
   })
 );

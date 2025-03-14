@@ -13,7 +13,7 @@ import { AuthService, AuthResponseData } from './auth.service';
 import { AlertComponent } from '../shared/alert/alert.component';
 import { PlaceholderDirective } from '../shared/placeholder/placeholder.directive';
 import { Store } from '@ngrx/store';
-import { LogInStart } from './store/auth.action';
+import { ClearError, LogInStart, SignUpStart } from './store/auth.action';
 import { IAppState } from '../modal';
 
 @Component({
@@ -27,6 +27,7 @@ export class AuthComponent implements OnDestroy, OnInit {
   @ViewChild(PlaceholderDirective, { static: false })
   alertHost: PlaceholderDirective;
 
+  private storeSub:Subscription;
   private closeSub: Subscription;
 
   constructor(
@@ -55,7 +56,7 @@ export class AuthComponent implements OnDestroy, OnInit {
       // authObs = this.authService.login(email, password);
       this.store.dispatch(LogInStart({ email, password }));
     } else {
-      authObs = this.authService.signup(email, password);
+      this.store.dispatch(SignUpStart({email,password}));
     }
 
     // authObs.subscribe(
@@ -76,14 +77,17 @@ export class AuthComponent implements OnDestroy, OnInit {
   }
 
   onHandleError() {
-    this.authError = null;
+    this.store.dispatch(ClearError())
   }
 
   ngOnInit(): void {
-    this.store.select('auth').subscribe({
+    this.storeSub = this.store.select('auth').subscribe({
       next: (data) => {
         this.isLoading = data.isLoading;
-        this.authError = data.authError;
+        this.authError = data.authError;        
+        if (data.authError) {
+          // this.showErrorAlert(this.authError)
+        }
       },
     });
   }
@@ -92,21 +96,24 @@ export class AuthComponent implements OnDestroy, OnInit {
     if (this.closeSub) {
       this.closeSub.unsubscribe();
     }
+    if (this.storeSub) {
+      this.storeSub.unsubscribe()
+    }
   }
 
-  private showErrorAlert(message: string) {
-    // const alertCmp = new AlertComponent();
-    const alertCmpFactory =
-      this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
-    const hostViewContainerRef = this.alertHost.viewContainerRef;
-    hostViewContainerRef.clear();
+  // private showErrorAlert(message: string) {
+  //   // const alertCmp = new AlertComponent();
+  //   const alertCmpFactory =
+  //     this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+  //   const hostViewContainerRef = this.alertHost.viewContainerRef;
+  //   hostViewContainerRef.clear();
 
-    const componentRef = hostViewContainerRef.createComponent(alertCmpFactory);
+  //   const componentRef = hostViewContainerRef.createComponent(alertCmpFactory);
 
-    componentRef.instance.message = message;
-    this.closeSub = componentRef.instance.close.subscribe(() => {
-      this.closeSub.unsubscribe();
-      hostViewContainerRef.clear();
-    });
-  }
+  //   componentRef.instance.message = message;
+  //   this.closeSub = componentRef.instance.close.subscribe(() => {
+  //     this.closeSub.unsubscribe();
+  //     hostViewContainerRef.clear();
+  //   });
+  // }
 }

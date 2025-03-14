@@ -8,6 +8,9 @@ export class User {
 
   get token() {
     if (!this._tokenExpirationDate || new Date() > this._tokenExpirationDate) {
+      console.log(this._tokenExpirationDate);
+      console.log(this._token);
+
       return null;
     }
     return this._token;

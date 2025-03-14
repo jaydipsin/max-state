@@ -12,7 +12,6 @@ export interface IUser {
   Token: string;
   expiresIn: Date;
 }
-
 export interface IShoppingListState {
   ingredients: Ingredient[];
   editIngredient: Ingredient | null;

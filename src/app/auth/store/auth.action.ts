@@ -3,26 +3,32 @@ import { IAuthResponseData, IUser } from 'src/app/modal';
 import { User } from '../user.model';
 
 const LOGIN_START = '[AUTH] login start';
-const LOGIN_SUCCESS = '[AUTH] login success';
-const LOGIN_FAIL = '[AUTH] login fail';
-
+const SIGNUP_START = '[AUTH] sing-up start';
+const AUTHENTICATE_SUCCESS = '[AUTH] auth success';
+const AUTHENTICATE_FAIL = '[AUTH] auth fail';
+const CLEAR_ERROR = '[AUTH] cancel error';
 const LOGOUT_SUCCESS = '[AUTH] log out success';
+const AUTO_LOGIN = '[AUTH] AUTO LOGIN ';
 
-const SINGUP_START = '[AUTH] sing-up start';
-const SINGUP_SUCCESS = '[AUTH] sing-up success';
-const SINGUP_FAIL = '[AUTH] sing-up fail';
+export const AutoLogin = createAction(AUTO_LOGIN);
 
+export const SignUpStart = createAction(
+  SIGNUP_START,
+  props<{ email: string; password: string }>()
+);
 export const LogInStart = createAction(
   LOGIN_START,
   props<{ email: string; password: string }>()
 );
-export const LogInSuccess = createAction(
-  LOGIN_SUCCESS,
+export const AuthenticateSuccess = createAction(
+  AUTHENTICATE_SUCCESS,
   props<{ user: IUser }>()
 );
-export const LogInFail = createAction(LOGIN_FAIL,props<{error:string}>());
-
-export const LogOutSuccess = createAction(
-  LOGOUT_SUCCESS,
-  props<{ user: null }>()
+export const AuthenticateFail = createAction(
+  AUTHENTICATE_FAIL,
+  props<{ error: string }>()
 );
+
+export const LogOutSuccess = createAction(LOGOUT_SUCCESS);
+
+export const ClearError = createAction(CLEAR_ERROR);
