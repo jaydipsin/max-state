@@ -1,9 +1,11 @@
 import { User } from './auth/user.model';
+import { Recipe } from './recipes/recipe.model';
 import { Ingredient } from './shared/ingredient.model';
 
 export interface IAppState {
   shoppingList: IShoppingListState;
   auth: AuthState;
+  recipes: IRecipeState
 }
 
 export interface IUser {
@@ -35,3 +37,7 @@ export interface AuthState {
   isLoading:boolean
 }
 
+
+export interface IRecipeState {
+  recipes:Recipe[]
+}

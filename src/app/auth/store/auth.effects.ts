@@ -20,11 +20,7 @@ import { User } from '../user.model';
 
 @Injectable()
 export class AuthEffect {
-
-
-    authServices = inject(AuthService)
-
-
+  authServices = inject(AuthService);
 
   private handelAuthentication(
     email: string,
@@ -70,14 +66,16 @@ export class AuthEffect {
           return { type: 'Dummy' };
         }
         console.log(userData);
-        
+        tap(() => {
+          this.authServices.setLogoutTimer(+userData.expiresIn * 1000);
+        });
         const loadedUser = new User(
           userData.email,
           userData.localId,
           userData.Token,
           userData.expiresIn
         );
-        
+
         if (loadedUser.token) {
           const user = {
             email: loadedUser.email,
@@ -113,6 +111,9 @@ export class AuthEffect {
             }
           )
           .pipe(
+            tap((resData) => {
+              this.authServices.setLogoutTimer(+resData.expiresIn * 1000);
+            }),
             map((data) => {
               let user: IUser;
               if (data) {
@@ -147,6 +148,9 @@ export class AuthEffect {
             }
           )
           .pipe(
+            tap((resData) => {
+              this.authServices.setLogoutTimer(+resData.expiresIn * 1000);
+            }),
             map((data) => {
               let user: IUser;
               if (data) {
