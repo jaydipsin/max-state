@@ -11,6 +11,16 @@ import { setRecipesAction } from '../recipes/store/recipe.action';
 
 @Injectable({ providedIn: 'root' })
 export class DataStorageService {
+
+  updatedStorage(name:string,Objindex:number){
+   let storage = JSON.parse(localStorage.getItem(name));
+   let updatedStorageData;
+   if (storage) {
+    updatedStorageData = storage.filter((data,index)=> index !== Objindex);  
+   }
+   updatedStorageData = []
+  }
+
   constructor(
     private http: HttpClient,
     private recipeService: RecipeService,
@@ -18,38 +28,4 @@ export class DataStorageService {
     private store: Store<IAppState>
   ) {}
 
-  storeRecipes() {
-    console.log('storeRecipes');
-    const recipes = this.recipeService.getRecipes();
-    this.http
-      .put(
-        'https://auth-test-c4bd3-default-rtdb.asia-southeast1.firebasedatabase.app/recipes.json',
-        recipes
-      )
-      .subscribe((response) => {
-        console.log(response);
-      });
-  }
-
-  fetchRecipes() {
-    return this.http
-      .get<Recipe[]>(
-        'https://auth-test-c4bd3-default-rtdb.asia-southeast1.firebasedatabase.app/recipes.json'
-      )
-      .pipe(
-        map((recipes) => {
-          return recipes.map((recipe) => {
-            return {
-              ...recipe,
-              ingredients: recipe.ingredients ? recipe.ingredients : [],
-            };
-          });
-        }),
-        tap((recipes) => {
-          console.log(recipes);
-          this.store.dispatch(setRecipesAction({ Recipe: [...recipes] }));
-          // this.recipeService.setRecipes(recipes);
-        })
-      );
-  }
 }

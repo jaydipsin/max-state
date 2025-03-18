@@ -3,6 +3,9 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 
 import { RecipeService } from '../recipe.service';
+import { Store } from '@ngrx/store';
+import { IAppState } from 'src/app/modal';
+import { addRecipesAction, updateRecipesAction } from '../store/recipe.action';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -21,7 +24,8 @@ export class RecipeEditComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private recipeService: RecipeService,
-    private router: Router
+    private router: Router,
+    private store:Store<IAppState>
   ) {}
 
   ngOnInit() {
@@ -33,16 +37,18 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.recipeForm.value);
+    
     // const newRecipe = new Recipe(
     //   this.recipeForm.value['name'],
     //   this.recipeForm.value['description'],
     //   this.recipeForm.value['imagePath'],
     //   this.recipeForm.value['ingredients']);
     if (this.editMode) {
-      this.recipeService.updateRecipe(this.id, this.recipeForm.value);
+      this.store.dispatch(updateRecipesAction({index:this.id, newRecipe:this.recipeForm.value}));
     } else {
-      console.log('submit test')
-      this.recipeService.addRecipe(this.recipeForm.value);
+      this.store.dispatch(addRecipesAction({recipe:this.recipeForm.value}))
+      // this.recipeService.addRecipe(this.recipeForm.value);
     }
     this.onCancel();
   }

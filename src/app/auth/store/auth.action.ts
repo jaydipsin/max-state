@@ -14,7 +14,7 @@ export const AutoLogin = createAction(AUTO_LOGIN);
 
 export const SignUpStart = createAction(
   SIGNUP_START,
-  props<{ email: string; password: string }>()
+  props<{ email: string; password: string; }>()
 );
 export const LogInStart = createAction(
   LOGIN_START,
@@ -22,7 +22,7 @@ export const LogInStart = createAction(
 );
 export const AuthenticateSuccess = createAction(
   AUTHENTICATE_SUCCESS,
-  props<{ user: IUser }>()
+  props<{ user: IUser,redirect: boolean }>()
 );
 export const AuthenticateFail = createAction(
   AUTHENTICATE_FAIL,

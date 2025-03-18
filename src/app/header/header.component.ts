@@ -6,6 +6,7 @@ import { AuthService } from '../auth/auth.service';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../modal';
 import { LogOutSuccess } from '../auth/store/auth.action';
+import { fetchRecipeAction, setRecipesAction, storeRecipeAction } from '../recipes/store/recipe.action';
 
 @Component({
   selector: 'app-header',
@@ -30,13 +31,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onSaveData() {
-    this.dataStorageService.storeRecipes();
+    this.store.dispatch(storeRecipeAction())
     console.log("test");
     
   }
 
   onFetchData() {
-    this.dataStorageService.fetchRecipes().subscribe();
+    this.store.dispatch(fetchRecipeAction())
   }
 
   onLogout() {

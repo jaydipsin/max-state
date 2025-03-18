@@ -15,6 +15,7 @@ import { AppReducer } from './store/app.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffect } from './auth/store/auth.effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { RecipesEffects } from './recipes/store/recipe.effect';
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
   imports: [
@@ -22,7 +23,7 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
     HttpClientModule,
     AppRoutingModule,
     StoreModule.forRoot(AppReducer),
-    EffectsModule.forRoot([AuthEffect]),
+    EffectsModule.forRoot([AuthEffect,RecipesEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains the last 25 states in memory
       logOnly: environment.production, // Restrict extension to log-only mode in production

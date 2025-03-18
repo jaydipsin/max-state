@@ -53,23 +53,23 @@ export class AuthService {
     }
   }
 
-  private handleAuthentication(
-    email: string,
-    userId: string,
-    token: string,
-    expiresIn: number
-  ) {
-    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
-    const user = new User(email, userId, token, expirationDate);
-    const userOb: IUser = {
-      email,
-      localId: userId,
-      Token: token,
-      expiresIn: expirationDate,
-    };
-    this.store.dispatch(AuthenticateSuccess({ user: userOb }));
-    // this.user.next(user);
-    this.setLogoutTimer(expiresIn * 1000);
-    localStorage.setItem('userData', JSON.stringify(user));
-  }
+  // private handleAuthentication(
+  //   email: string,
+  //   userId: string,
+  //   token: string,
+  //   expiresIn: number
+  // ) {
+  //   const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+  //   const user = new User(email, userId, token, expirationDate);
+  //   const userOb: IUser = {
+  //     email,
+  //     localId: userId,
+  //     Token: token,
+  //     expiresIn: expirationDate,
+  //   };
+  //   this.store.dispatch(AuthenticateSuccess({ user: userOb }));
+  //   // this.user.next(user);
+  //   this.setLogoutTimer(expiresIn * 1000);
+  //   localStorage.setItem('userData', JSON.stringify(user));
+  // }
 }

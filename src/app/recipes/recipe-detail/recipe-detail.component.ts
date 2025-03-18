@@ -6,58 +6,60 @@ import { Store } from '@ngrx/store';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
 import { IAppState } from 'src/app/modal';
+import { deleteRecipesAction } from '../store/recipe.action';
+import { AddIngredientAction, AddIngredientsAction } from 'src/app/shopping-list/shopping-store/shopping-list.action';
 
 @Component({
   selector: 'app-recipe-detail',
   templateUrl: './recipe-detail.component.html',
-  styleUrls: ['./recipe-detail.component.css']
+  styleUrls: ['./recipe-detail.component.css'],
 })
 export class RecipeDetailComponent implements OnInit {
   recipe: Recipe;
   id: number;
 
-  constructor(private recipeService: RecipeService,
-              private route: ActivatedRoute,
-              private router: Router,
-              private store:Store<IAppState>) {
-  }
+  constructor(
+    private recipeService: RecipeService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private store: Store<IAppState>
+  ) {}
 
   ngOnInit() {
-    this.route.params.pipe(
-      map((params)=>{
-        return +params['id']
-      }),
-      switchMap((id)=>{
-        this.id = id;
-        return this.store.select('recipes');
-      }),
-      map((recipeState)=>{
-        return recipeState.recipes.find((recipe,index)=>{
-         return index === this.id
+    this.route.params
+      .pipe(
+        map((params) => {
+          return +params['id'];
+        }),
+        switchMap((id) => {
+          this.id = id;
+          return this.store.select('recipes');
+        }),
+        map((recipeState) => {
+          return recipeState.recipes.find((recipe, index) => {
+            return index === this.id;
+          });
         })
-      })
-    )
-      .subscribe(
-        (recipe) => {
-          this.recipe = recipe
-          // this.recipe = this.recipeService.getRecipe(this.id);
-          
-        }
-      );
+      )
+      .subscribe((recipe) => {
+        this.recipe = recipe;
+        // this.recipe = this.recipeService.getRecipe(this.id);
+      });
   }
 
   onAddToShoppingList() {
-    this.recipeService.addIngredientsToShoppingList(this.recipe.ingredients);
+    // this.recipeService.addIngredientsToShoppingList(this.recipe.ingredients);
+    this.store.dispatch(AddIngredientsAction({Ingredient:this.recipe.ingredients}))
   }
 
   onEditRecipe() {
-    this.router.navigate(['edit'], {relativeTo: this.route});
+    this.router.navigate(['edit'], { relativeTo: this.route });
     // this.router.navigate(['../', this.id, 'edit'], {relativeTo: this.route});
   }
 
   onDeleteRecipe() {
-    this.recipeService.deleteRecipe(this.id);
+    // this.recipeService.deleteRecipe(this.id);
+    this.store.dispatch(deleteRecipesAction({ index: this.id }));
     this.router.navigate(['/recipes']);
   }
-
 }

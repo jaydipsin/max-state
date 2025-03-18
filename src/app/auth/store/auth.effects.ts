@@ -38,7 +38,7 @@ export class AuthEffect {
     };
 
     localStorage.setItem('user', JSON.stringify(user));
-    this.store.dispatch(AuthenticateSuccess({ user }));
+    this.store.dispatch(AuthenticateSuccess({ user, redirect: true }));
     return user;
   }
 
@@ -84,7 +84,7 @@ export class AuthEffect {
             expiresIn: new Date(userData.expiresIn),
           };
 
-          return AuthenticateSuccess({ user });
+          return AuthenticateSuccess({ user, redirect: false });
           // this.user.next(loadedUser);
           // const expirationDuration =
           //   new Date(userData._tokenExpirationDate).getTime() -
@@ -124,7 +124,7 @@ export class AuthEffect {
                   +data.expiresIn
                 );
               }
-              return AuthenticateSuccess({ user });
+              return AuthenticateSuccess({ user, redirect: true });
             }),
             catchError((error) => {
               return of(this.handleError(error));
@@ -162,7 +162,7 @@ export class AuthEffect {
                   +data.expiresIn
                 );
               }
-              return AuthenticateSuccess({ user });
+              return AuthenticateSuccess({ user, redirect: true });
             }),
             catchError((error) => {
               return of(this.handleError(error)); // Returning the error to the observable stream
@@ -190,9 +190,7 @@ export class AuthEffect {
       return this.action$.pipe(
         ofType(AuthenticateSuccess),
         tap((data) => {
-          if (data) {
-            console.log('test');
-
+          if (data.redirect) {
             this._route.navigate(['/recipes']);
           }
         })
